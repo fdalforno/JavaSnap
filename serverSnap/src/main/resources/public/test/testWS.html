@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript">
+	append = function(text){
+		document.getElementById("eventi_websocket").insertAdjacentHTML('beforeend', 
+			"<li>" + text + ";</li>"
+		);
+	}	 
+	
+	
+	window.onload = function(){
+		var echo_service = new WebSocket('ws://127.0.0.1:8000/echo'); 
+		
+		echo_service.onmessage = function(event){
+			append("messaggio ricevuto " + event.data);
+		} 
+		
+		echo_service.onopen = function(){
+			append("connessione effettuata") 
+			echo_service.send("hello!");
+		} 
+		
+		echo_service.onclose = function(){
+			append("connessione chiusa");
+		} 
+		
+		echo_service.onerror = function(){
+			append("errore nella connessione");
+		}
+	}
+    </script> 
+  </head>
+  <body>
+	<ul id="eventi_websocket"> 
+	</ul>
+  </body> 
+</html>
