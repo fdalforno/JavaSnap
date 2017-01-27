@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Morphic!</title>
+	<script type="text/javascript" src="../snap/morphic.js"></script>
+    <script type="text/javascript">
+		 var world;
+
+		window.onload = function () {
+			world = new WorldMorph(document.getElementById('world'));
+			
+			
+			var foo = new BouncerMorph();
+			foo.setPosition(new Point(50, 20));
+			foo.setExtent(new Point(300, 200));
+			foo.alpha = 0.9;
+			foo.speed = 3;
+			
+			foo.prototype.mouseMove = function(pos) {
+				console.log(pos);
+			};
+			
+			world.add(foo);
+			
+			
+			var newMorph = new MouseSensorMorph();
+			newMorph.setColor(new Color(230, 200, 100));
+			newMorph.edge = 35;
+			newMorph.border = 15;
+			newMorph.borderColor = new Color(200, 100, 50);
+			newMorph.alpha = 0.2;
+			newMorph.setExtent(new Point(100, 100));
+			
+			world.add(newMorph);
+			
+			world.about();
+			
+			loop();
+		};
+
+		function loop() {
+			requestAnimationFrame(loop);
+			world.doOneCycle();
+		}
+		
+		
+		
+		
+    </script> 
+  </head>
+  <body>
+	<canvas id="world" tabindex="1" width="800" height="600" style="position: absolute;">
+		<p>Your browser doesn't support canvas.</p>
+    </canvas>
+  </body> 
+</html>

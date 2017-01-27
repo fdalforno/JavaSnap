@@ -142,6 +142,12 @@ public class SerialUtils implements SerialPortEventListener{
 		String response;
 		
 		if(writer != null){
+			
+			if(log.isDebugEnabled()){
+				log.debug("Send " + value);
+			}
+			
+			
 			writer.println(value);
 			serialPort.notifyOnDataAvailable(false);
 
@@ -164,6 +170,11 @@ public class SerialUtils implements SerialPortEventListener{
 			
 		}else{
 			throw new SerialException("Serialport not opened");
+		}
+		
+		
+		if(log.isDebugEnabled()){
+			log.debug("Received " + response);
 		}
 		
 		return response;
