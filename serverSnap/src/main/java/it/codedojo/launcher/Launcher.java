@@ -143,6 +143,15 @@ public class Launcher {
 			
 			return response;
 		}, new JsonTransformer());
+		
+		
+		get("/listChildren", (req, res) -> {
+			JsonResponse<List<String>> response = new JsonResponse<List<String>>();
+			List<String> children = SnapWebSocket.getChildren();
+			response.setData(children);
+			response.setType(ResponseType.OK);
+			return response; 
+		}, new JsonTransformer());
 
 		get("/listPort", (req, res) -> {
 			

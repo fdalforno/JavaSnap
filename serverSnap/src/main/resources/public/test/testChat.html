@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript">
+    
+    var echo_service; 
+	
+    
+    
+    
+	append = function(text){
+		document.getElementById("eventi_websocket").insertAdjacentHTML('beforeend', 
+			"<li>" + text + ";</li>"
+		);
+	}	 
+	
+	function Message(type,from,to,message){
+		this.type = type;
+		this.from = from;
+		this.to = to;
+		this.message = message;
+	}
+	
+	
+	present = function(){
+		var value = document.getElementById("name").value;
+		var message = new Message("PRESENT",value,null,null);
+		
+		echo_service.send(JSON.stringify(message));
+	}
+	
+	
+	send = function(){
+		var from = document.getElementById("name").value;
+		var to = document.getElementById("to").value;
+		var value = document.getElementById("message").value;
+		
+		var message = new Message("MESSAGE",from,to,value);
+		
+		echo_service.send(JSON.stringify(message));
+	}
+	
+	
+	window.onload = function(){
+		echo_service = new WebSocket('ws://127.0.0.1:8000/snapWebSocket'); 
+		
+		echo_service.onmessage = function(event){
+			append("messaggio ricevuto " + event.data);
+		} 
+		
+		echo_service.onopen = function(){
+			append("connessione effettuata") 
+		} 
+		
+		echo_service.onclose = function(){
+			append("connessione chiusa");
+		} 
+		
+		echo_service.onerror = function(){
+			append("errore nella connessione");
+		}
+	}
+    </script> 
+  </head>
+  <body>
+  	<input type="text" name="name" id="name" /><input type="button" id="submit" value="Present" onclick="present()"/><br/>
+  	<input type="text" name="message" id="message" /><input type="text" name="to" id="to" /><input type="button" id="submit" value="Send" onclick="send()"/>
+	<ul id="eventi_websocket"> 
+	</ul>
+  </body> 
+</html>
